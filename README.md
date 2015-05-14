@@ -1,6 +1,8 @@
 # AAMFeedback
 
-Simple Feedback library, forked from [fladdict/AAMFeedback](https://github.com/fladdict/AAMFeedback "fladdict/AAMFeedback").
+Simple Feedback library, forked from [PlusR/AAMFeedback](https://github.com/PlusR/AAMFeedback "PlusR/AAMFeedback").
+
+It was forked because if you have no mail, this nasty feedback control fails silently, which is awful.
 
 ![screenshot](http://f.cl.ly/items/291A0A2u0R2B3u3V0b3H/screenshot.png)
 

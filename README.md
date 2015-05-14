@@ -8,7 +8,7 @@ It was forked because if you have no mail, this nasty feedback control fails sil
 
 ## Installation
 
-	pod 'AAMFeedback', :git => 'https://github.com/PlusR/AAMFeedback.git'
+	pod 'AAMFeedback', :git => 'https://github.com/WhallaLabs/AAMFeedback.git'
 
 ## Usage
 
@@ -40,7 +40,7 @@ You’ll need to manually create/copy AAMLocalizable.strings to your project.
 
 Example project:
 
-* [PlusR/AAMFeedbackLocalizeExample](https://github.com/PlusR/AAMFeedbackLocalizeExample "PlusR/AAMFeedbackLocalizeExample")
+* [PlusR/AAMFeedbackLocalizeExample](https://github.com/WhallaLabs/AAMFeedbackLocalizeExample "PlusR/AAMFeedbackLocalizeExample")
 
 Thanks [Move lproj directories to Appirater.bundle when using CocoaPods by eager · Pull Request #129 · arashpayan/appirater](https://github.com/arashpayan/appirater/pull/129 "Move lproj directories to Appirater.bundle when using CocoaPods by eager · Pull Request #129 · arashpayan/appirater").
 

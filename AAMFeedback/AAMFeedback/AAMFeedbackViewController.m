@@ -314,6 +314,7 @@ static BOOL _alwaysUseMainBundle = NO;
 - (void)nextDidPress:(id)sender {
     [self.descriptionTextView resignFirstResponder];
     if (![[self class] isAvailable]) {
+        [self showErrorViewControllerWithMessage:@"Your device has no Mail accounts set up. Go to the Preferences app to set them up."];
         return;
     }
     MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];

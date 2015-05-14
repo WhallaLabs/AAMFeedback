@@ -15,11 +15,11 @@ static BOOL _alwaysUseMainBundle = NO;
 
 @interface AAMFeedbackViewController ()
 
-@property(nonatomic, strong) UITextView *descriptionTextView;
+@property (nonatomic, strong) UITextView *descriptionTextView;
 
-@property(nonatomic, strong) UILabel *descriptionPlaceHolder;
+@property (nonatomic, strong) UILabel *descriptionPlaceHolder;
 
-@property(nonatomic) BOOL isFeedbackSent;
+@property (nonatomic) BOOL isFeedbackSent;
 
 - (NSString *)_platformString;
 
@@ -45,7 +45,7 @@ static BOOL _alwaysUseMainBundle = NO;
     return [MFMailComposeViewController canSendMail];
 }
 
-- (id)initWithStyle:(UITableViewStyle) style {
+- (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self == nil) {
         return nil;
@@ -53,7 +53,7 @@ static BOOL _alwaysUseMainBundle = NO;
     return self;
 }
 
-- (id)initWithTopics:(NSArray *) theIssues {
+- (id)initWithTopics:(NSArray *)theIssues {
     self = [self init];
     if (self) {
         self.topics = theIssues;
@@ -62,7 +62,7 @@ static BOOL _alwaysUseMainBundle = NO;
     return self;
 }
 
-+ (void)setAlwaysUseMainBundle:(BOOL) alwaysUseMainBundle {
++ (void)setAlwaysUseMainBundle:(BOOL)alwaysUseMainBundle {
     _alwaysUseMainBundle = alwaysUseMainBundle;
 }
 
@@ -70,42 +70,43 @@ static BOOL _alwaysUseMainBundle = NO;
     NSBundle *bundle;
     if (_alwaysUseMainBundle) {
         bundle = [NSBundle mainBundle];
-    } else {
+    }
+    else {
         NSURL *bundleURL = [[NSBundle bundleForClass:self.class] URLForResource:@"AAMFeedback" withExtension:@"bundle"];
         if (bundleURL) {
             // AAMFeedback.bundle will likely only exist when used via CocoaPods
             bundle = [NSBundle bundleWithURL:bundleURL];
-        } else {
+        }
+        else {
             bundle = [NSBundle mainBundle];
         }
     }
-
+    
     return bundle;
 }
-
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = NSLocalizedStringFromTableInBundle(@"AAMFeedbackTitle", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil);
     if (self.topics == nil) {
         self.topics = @[
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsQuestion", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsRequest", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsBugReport", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsMedia", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsBusiness", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
-            NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsOther", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil)
-        ];
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsQuestion", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsRequest", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsBugReport", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsMedia", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsBusiness", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil),
+                        NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsOther", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil)
+                        ];
     }
-
+    
     self.topicsToSend = [self.topics copy];
     [self updateBackGroundImage];
 }
 
-- (void)setBackgroundImage:(UIImage *) backgroundImage {
+- (void)setBackgroundImage:(UIImage *)backgroundImage {
     _backgroundImage = backgroundImage;
     if ([self isViewLoaded]) {
         [self updateBackGroundImage];
@@ -119,90 +120,93 @@ static BOOL _alwaysUseMainBundle = NO;
     }
 }
 
-
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.descriptionPlaceHolder = nil;
     self.descriptionTextView = nil;
 }
 
-- (void)viewWillAppear:(BOOL) animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self _updateNavigation];
     [self _updatePlaceholder];
     [self.tableView reloadData];
 }
 
-- (void)viewDidAppear:(BOOL) animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.isFeedbackSent) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-- (void)viewWillDisappear:(BOOL) animated {
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL) animated {
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation) interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *) tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger) section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return 2;
     }
     return 4;
 }
 
-- (CGFloat)tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
         return MAX(88, [self contentSizeOfTextView:self.descriptionTextView].height);
     }
-
+    
     return 44;
 }
 
-- (NSString *)tableView:(UITableView *) tableView titleForHeaderInSection:(NSInteger) section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
             return NSLocalizedStringFromTableInBundle(@"AAMFeedbackTableHeaderTopics", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil);
+            
         case 1:
             return NSLocalizedStringFromTableInBundle(@"AAMFeedbackTableHeaderBasicInfo", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil);
+            
         default:
             break;
     }
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *) indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         if (indexPath.section == 1) {
             //General Infos
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        } else {
+        }
+        else {
             if (indexPath.row == 0) {
                 //Topics
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            } else {
+            }
+            else {
                 //Topics Description
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-
+                
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 NSInteger textViewMargin = 10;
                 self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectInset(cell.contentView.frame, textViewMargin, 0)];
@@ -213,7 +217,7 @@ static BOOL _alwaysUseMainBundle = NO;
                 self.descriptionTextView.scrollEnabled = NO;
                 self.descriptionTextView.text = self.descriptionText;
                 [cell.contentView addSubview:self.descriptionTextView];
-
+                
                 self.descriptionPlaceHolder = [[UILabel alloc] initWithFrame:CGRectInset(cell.contentView.frame, textViewMargin, 5)];
                 self.descriptionPlaceHolder.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
                 self.descriptionPlaceHolder.font = [UIFont systemFontOfSize:16];
@@ -223,26 +227,28 @@ static BOOL _alwaysUseMainBundle = NO;
                 self.descriptionPlaceHolder.userInteractionEnabled = NO;
                 [cell.contentView addSubview:self.descriptionPlaceHolder];
                 [self.descriptionPlaceHolder sizeToFit];
-
+                
                 [self _updatePlaceholder];
             }
         }
     }
-
+    
     // Configure the cell...
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
                 case 0:
-
+                    
                     cell.textLabel.text = NSLocalizedStringFromTableInBundle(@"AAMFeedbackTopicsTitle", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil);
                     cell.detailTextLabel.text = NSLocalizedStringFromTableInBundle([self _selectedTopic], @"AAMLocalizable", [AAMFeedbackViewController bundle], nil);
                     break;
+                    
                 case 1:
                 default:
                     break;
             }
             break;
+            
         case 1:
             switch (indexPath.row) {
                 case 0:
@@ -250,36 +256,40 @@ static BOOL _alwaysUseMainBundle = NO;
                     cell.detailTextLabel.text = [self _platformString];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     break;
+                    
                 case 1:
                     cell.textLabel.text = @"iOS";
                     cell.detailTextLabel.text = [UIDevice currentDevice].systemVersion;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     break;
+                    
                 case 2:
                     cell.textLabel.text = @"App Name";
                     cell.detailTextLabel.text = [self _appName];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     break;
+                    
                 case 3:
                     cell.textLabel.text = @"App Version";
                     cell.detailTextLabel.text = [self _appVersion];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     break;
+                    
                 default:
                     break;
             }
             break;
+            
         default:
             break;
     }
-
+    
     return cell;
 }
 
-
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *) tableView didSelectRowAtIndexPath:(NSIndexPath *) indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 0) {
         [self.descriptionTextView resignFirstResponder];
         AAMFeedbackTopicsViewController *topicsViewController = [[AAMFeedbackTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -297,12 +307,11 @@ static BOOL _alwaysUseMainBundle = NO;
     }
 }
 
-
-- (void)cancelDidPress:(id) sender {
+- (void)cancelDidPress:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)nextDidPress:(id) sender {
+- (void)nextDidPress:(id)sender {
     [self.descriptionTextView resignFirstResponder];
     if (![[self class] isAvailable]) {
         return;
@@ -320,40 +329,59 @@ static BOOL _alwaysUseMainBundle = NO;
     [self presentViewController:mailComposeViewController animated:YES completion:nil];
 }
 
+- (void)showErrorViewControllerWithMessage:(NSString *)message {
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:NSLocalizedString(@"Error", @"Error alert title")
+                                          message:message
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(alertController) weakController = alertController;
+    
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Ok", nil)
+                                   style:UIAlertActionStyleCancel
+                                   handler: ^(UIAlertAction *action) {
+                                       [weakController dismissViewControllerAnimated:YES completion:nil];
+                                   }];
+    
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
-- (void)textViewDidChange:(UITextView *) textView {
+- (void)textViewDidChange:(UITextView *)textView {
     //Magic for updating Cell height
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
-
+    
     CGRect f = self.descriptionTextView.frame;
     f.size.height = [self contentSizeOfTextView:self.descriptionTextView].height;
     self.descriptionTextView.frame = f;
     [self _updatePlaceholder];
     self.descriptionText = self.descriptionTextView.text;
-
 }
 
-- (CGSize)contentSizeOfTextView:(UITextView *) myTextView {
+- (CGSize)contentSizeOfTextView:(UITextView *)myTextView {
     return [myTextView sizeThatFits:CGSizeMake(myTextView.frame.size.width, FLT_MAX)];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController *) controller
-          didFinishWithResult:(MFMailComposeResult) result error:(NSError *) error {
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     if (result == MFMailComposeResultCancelled) {
-    } else if (result == MFMailComposeResultSent) {
+    }
+    else if (result == MFMailComposeResultSent) {
         self.isFeedbackSent = YES;
-    } else if (result == MFMailComposeResultFailed) {
+    }
+    else if (result == MFMailComposeResultFailed) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTableInBundle(@"AAMFeedbackMailDidFinishWithError", @"AAMLocalizable", [AAMFeedbackViewController bundle], nil)
-                                                                    delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                                                       delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alert show];
     }
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-- (void)feedbackTopicsViewController:(AAMFeedbackTopicsViewController *) feedbackTopicsViewController
-               didSelectTopicAtIndex:(NSInteger) selectedIndex {
+- (void)feedbackTopicsViewController:(AAMFeedbackTopicsViewController *)feedbackTopicsViewController
+               didSelectTopicAtIndex:(NSInteger)selectedIndex {
     _selectedTopicsIndex = selectedIndex;
 }
 
@@ -362,19 +390,18 @@ static BOOL _alwaysUseMainBundle = NO;
 // http://stackoverflow.com/questions/2798653/is-it-possible-to-determine-whether-viewcontroller-is-presented-as-modal
 - (BOOL)isModal {
     BOOL isModal = ((self.parentViewController && self.parentViewController.presentedViewController == self) ||
-        //or if I have a navigation controller, check if its parent modal view controller is self navigation controller
-            (self.navigationController && self.navigationController.parentViewController && self.navigationController.parentViewController.presentedViewController == self.navigationController) ||
-        //or if the parent of my UITabBarController is also a UITabBarController class, then there is no way to do that, except by using a modal presentation
-            [[[self tabBarController] parentViewController] isKindOfClass:[UITabBarController class]]);
-
+                    //or if I have a navigation controller, check if its parent modal view controller is self navigation controller
+                    (self.navigationController && self.navigationController.parentViewController && self.navigationController.parentViewController.presentedViewController == self.navigationController) ||
+                    //or if the parent of my UITabBarController is also a UITabBarController class, then there is no way to do that, except by using a modal presentation
+                    [[[self tabBarController] parentViewController] isKindOfClass:[UITabBarController class]]);
+    
     //iOS 5+
     if (!isModal && [self respondsToSelector:@selector(presentingViewController)]) {
         isModal = ((self.presentingViewController && self.presentingViewController.presentedViewController == self) ||
-            //or if I have a navigation controller, check if its parent modal view controller is self navigation controller
-                (self.navigationController && self.navigationController.presentingViewController && self.navigationController.presentingViewController.presentedViewController == self.navigationController) ||
-            //or if the parent of my UITabBarController is also a UITabBarController class, then there is no way to do that, except by using a modal presentation
-                [[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]]);
-
+                   //or if I have a navigation controller, check if its parent modal view controller is self navigation controller
+                   (self.navigationController && self.navigationController.presentingViewController && self.navigationController.presentingViewController.presentedViewController == self.navigationController) ||
+                   //or if the parent of my UITabBarController is also a UITabBarController class, then there is no way to do that, except by using a modal presentation
+                   [[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]]);
     }
     return isModal;
 }
@@ -389,7 +416,8 @@ static BOOL _alwaysUseMainBundle = NO;
 - (void)_updatePlaceholder {
     if ([self.descriptionTextView.text length] > 0) {
         self.descriptionPlaceHolder.hidden = YES;
-    } else {
+    }
+    else {
         self.descriptionPlaceHolder.hidden = NO;
     }
 }
@@ -400,12 +428,12 @@ static BOOL _alwaysUseMainBundle = NO;
 
 - (NSString *)_feedbackBody {
     NSString *body = [NSString stringWithFormat:@"%@\n\n\nDevice:\n%@\n\niOS:\n%@\n\nApp:\n%@ %@",
-                                                self.descriptionTextView.text,
-                                                [self _platformString],
-                                                [UIDevice currentDevice].systemVersion,
-                                                [self _appName],
-                                                [self _appVersion]];
-
+                      self.descriptionTextView.text,
+                      [self _platformString],
+                      [UIDevice currentDevice].systemVersion,
+                      [self _appName],
+                      [self _appVersion]];
+    
     return body;
 }
 
@@ -428,7 +456,6 @@ static BOOL _alwaysUseMainBundle = NO;
 - (NSString *)_appVersion {
     return [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 }
-
 
 - (NSString *)_platformString {
     return [UIDeviceHardware platformString];
